@@ -103,9 +103,7 @@ CANVAS.prototype = {
                         self.cb && self.cb(); // 回调函数
                         if (self.queue.length > 1) {
                             // 如果有队列
-                            self.handle({
-                                target: self.queue[0]
-                            });
+                            self.handle(self.queue[0]);
                             self.queue.splice(0, 1);
                         }
                         return;
@@ -124,9 +122,7 @@ CANVAS.prototype = {
                         self.cb && self.cb();
                         if (self.queue.length > 1) {
                             // 如果有队列
-                            self.handle({
-                                target: self.queue[0]
-                            });
+                            self.handle(self.queue[0]);
                             self.queue.splice(0, 1);
                         }
                         return;
@@ -173,12 +169,12 @@ CANVAS.prototype = {
     },
     // 外部调用入口
     handle: function handle(options) {
-        var d = this.d;
-        var target = +options.target;
         if (this.gooing) {
-            this.queue.push(target); // 如果在动画未结束前有新值添加,会暂时把新值添加到队列当中,本次动画结束后,依次执行
+            this.queue.push(options); // 如果在动画未结束前有新值添加,会暂时把新值添加到队列当中,本次动画结束后,依次执行
             return;
         }
+        var d = this.d;
+        var target = +options.target;
         if (target / this.Total < 0.01 && target !== 0) {
             console.error('你传入的目标值过小,未能达到1%,不响应本次操作');
             return;
